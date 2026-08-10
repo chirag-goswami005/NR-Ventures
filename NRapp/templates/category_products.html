@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+/* ================= CREATIVE CORE & VARIABLES ================= */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+:root {
+    --primary: #38bdf8;
+    --gold: #d4a537;
+    --card-bg: rgba(15, 23, 42, 0.4);
+    --border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    background: #020617;
+    /* Industrial Grid Background */
+    background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    color: #f1f5f9;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* ================= BACKGROUND MESH ================= */
+.mesh-gradient {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 10% 10%, rgba(212, 165, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.05) 0%, transparent 40%);
+    z-index: -1;
+}
+
+/* ================= HERO / SECTION TITLE ================= */
+.products-section { padding: 120px 0; position: relative; }
+
+.section-title h2 {
+    font-size: clamp(3rem, 10vw, 5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    background: linear-gradient(to bottom, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.creative-line {
+    width: 60px; height: 4px; background: var(--gold);
+    margin: 20px auto; border-radius: 10px;
+}
+
+/* ================= THE CREATIVE CARD ================= */
+.card-perspective { perspective: 1000px; }
+
+.product-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    overflow: hidden;
+    height: 100%;
+    backdrop-filter: blur(20px);
+    transition: transform 0.1s ease, box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    transform-style: preserve-3d; /* Key for 3D effect */
+}
+
+/* Hover Glow Effect */
+.product-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(56, 189, 248, 0.15), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+.product-card:hover::after { opacity: 1; }
+
+.image-box {
+    position: relative;
+    height: 320px;
+    margin: 15px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.product-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: 1.2s cubic-bezier(0.2, 1, 0.2, 1);
+}
+
+.product-card:hover img { transform: scale(1.1) rotate(1deg); }
+
+/* Floating Badge */
+.cat-badge {
+    position: absolute;
+    top: 25px; right: 25px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 5px 15px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 5;
+    letter-spacing: 1px;
+}
+
+/* ================= CONTENT & BUTTON ================= */
+.product-content { padding: 0 30px 30px 30px; }
+
+.product-content h4 {
+    font-size: 24px; font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.view-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 14px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: 0.4s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+.view-btn:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+}
+
+/* ================= ANIMATION ================= */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+}
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.2, 1);
+}
+
+</style>
+
+<div class="mesh-gradient"></div>
+
+<section class="products-section">
+    <div class="container">
+        
+        <div class="section-title text-center fade-up">
+            <h2>{{ category.name }}</h2>
+            <div class="creative-line"></div>
+            <p class="text-secondary col-md-8 mx-auto fs-5">
+                Superior engineering meets artistic fabrication. Explore our catalog of high-performance industrial assets.
+            </p>
+        </div>
+
+        <div class="row g-4 mt-5">
+            {% for product in products %}
+            <div class="col-xl-4 col-md-6 card-perspective">
+                <div class="product-card fade-up" style="transition-delay: {{ forloop.counter0|add:0 }}00ms;">
+                    
+                    <span class="cat-badge text-uppercase">{{ category.name }}</span>
+                    
+                    <div class="image-box">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="/static/images/{{ product.name }}.jpg" 
+                                 onerror="this.src='/static/images/{{ product.name }}.webp'; this.onerror=function(){this.src='{% static 'images/default.jpg' %}'};" 
+                                 alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="product-content">
+                        <h4>{{ product.name }}</h4>
+                        <p class="text-secondary small">{{ product.description|truncatewords:20 }}</p>
+                        
+                        <a href="{% url 'product_detail' product.id %}" class="view-btn">
+                            ANALYZE SYSTEM <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+    // Reveal Cards with Delay
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
+
+    // 3D TILT & LIGHTING EFFECT
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Update Lighting
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+
+            // Calculate Rotation
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 15;
+            const rotateY = (centerX - x) / 15;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        });
+    });
+</script>
+
+{% endblock %}

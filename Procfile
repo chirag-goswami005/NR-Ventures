@@ -1,0 +1,1 @@
+web: gunicorn NR_Ventures.wsgi:application

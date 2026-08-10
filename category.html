@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#020617;
+}
+
+/* SECTION */
+.product-section{
+    padding:80px 0;
+}
+
+/* TITLE */
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title h2{
+    color:white;
+    font-size:40px;
+    font-weight:700;
+}
+
+.section-title p{
+    color:#94a3b8;
+    margin-top:10px;
+}
+
+/* CARD */
+.product-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:20px;
+    overflow:hidden;
+    transition:.4s;
+    height:100%;
+}
+
+.product-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+/* IMAGE */
+.product-img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+}
+
+/* BODY */
+.product-body{
+    padding:25px;
+}
+
+.product-body h5{
+    color:white;
+    font-size:22px;
+    margin-bottom:15px;
+}
+
+.product-body p{
+    color:#cbd5e1;
+    font-size:15px;
+    line-height:1.7;
+}
+
+/* BUTTON */
+.btn-view{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 20px;
+    border-radius:30px;
+    text-decoration:none;
+    color:white;
+    background:linear-gradient(135deg,#38bdf8,#2563eb);
+    transition:.3s;
+}
+
+.btn-view:hover{
+    transform:translateY(-3px);
+    color:white;
+}
+
+/* EMPTY */
+.empty-box{
+    text-align:center;
+    padding:80px 20px;
+    background:rgba(255,255,255,0.05);
+    border-radius:20px;
+}
+
+.empty-box h4{
+    color:white;
+}
+
+.empty-box p{
+    color:#94a3b8;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .section-title h2{
+        font-size:30px;
+    }
+
+}
+
+</style>
+
+<section class="product-section">
+
+<div class="container">
+
+    <!-- TITLE -->
+    <div class="section-title">
+
+        <h2>Category Products</h2>
+
+        <p>
+            Explore our premium industrial products and storage solutions
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        {% for product in products %}
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="product-card">
+
+                <!-- IMAGE -->
+                <img
+                src="{{ product.image.url }}"
+                class="product-img"
+                alt="{{ product.name }}">
+
+                <!-- BODY -->
+                <div class="product-body">
+
+                    <h5>{{ product.name }}</h5>
+
+                    <p>
+                        {{ product.description|truncatewords:20 }}
+                    </p>
+
+                    <a href="#" class="btn-view">
+                        View Details →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="empty-box">
+
+                <h4>No Products Available</h4>
+
+                <p>
+                    Products will appear here soon.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</section>
+
+{% endblock %}

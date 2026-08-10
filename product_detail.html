@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Professional Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Outfit:wght@300;400;600;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.3);
+    --bg-dark: #020617;
+    --glass: rgba(15, 23, 42, 0.7);
+    --border-white: rgba(255, 255, 255, 0.1);
+}
+
+.product-details {
+    padding: 100px 0;
+    background: var(--bg-dark);
+    font-family: 'Outfit', sans-serif;
+    color: #f1f5f9;
+    min-height: 100vh;
+}
+
+/* ================= BACKGROUND GLOWS ================= */
+.bg-glow {
+    position: fixed;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    filter: blur(100px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ================= MAIN WRAPPER ================= */
+.main-wrapper {
+    position: relative;
+    z-index: 2;
+    background: var(--glass);
+    border: 1px solid var(--border-white);
+    border-radius: 40px;
+    backdrop-filter: blur(30px);
+    padding: 50px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+/* ================= IMAGE SECTION ================= */
+.image-container {
+    position: relative;
+    border-radius: 30px;
+    background: #0f172a;
+    padding: 20px;
+    border: 1px solid var(--border-white);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+}
+
+.main-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.thumb-strip {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    overflow-x: auto;
+    padding: 5px;
+}
+
+.thumb-card {
+    min-width: 80px;
+    height: 70px;
+    border-radius: 12px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+    background: #1e293b;
+    overflow: hidden;
+}
+
+.thumb-card img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-card.active { border-color: var(--accent); transform: translateY(-5px); }
+
+/* ================= CONTENT SECTION ================= */
+.system-tag {
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.product-h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    margin: 15px 0 25px 0;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.description-box {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #cbd5e1;
+    margin-bottom: 35px;
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+}
+
+.spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.spec-item {
+    background: rgba(255,255,255,0.03);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid var(--border-white);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.spec-item i { color: var(--accent); font-size: 1.2rem; }
+
+/* ================= BUTTON ================= */
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white !important;
+    padding: 18px 35px;
+    border-radius: 50px;
+    font-weight: 800;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.4s;
+    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+}
+
+@media (max-width: 991px) {
+    .main-wrapper { padding: 25px; border-radius: 0; }
+    .image-container { height: 350px; }
+}
+</style>
+
+<section class="product-details">
+    <div class="bg-glow" style="top: 0; right: 0;"></div>
+    <div class="bg-glow" style="bottom: 0; left: 0;"></div>
+
+    <div class="container">
+        <div class="main-wrapper">
+            <div class="row g-5">
+                
+                <!-- LEFT: IMAGE GALLERY -->
+                <div class="col-lg-6">
+                    <div class="image-container" id="tiltContainer">
+                        {% if images %}
+                            <img id="mainImage" src="{{ images.0.image.url }}" alt="{{ product.name }}" class="main-img">
+                        {% elif product.image %}
+                            <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}" class="main-img">
+                        {% else %}
+                            <!-- Static Logic: Jab koi image upload na ho -->
+                            <img id="mainImage" 
+                                 src="/static/images/{{ product.name }}.jpg" 
+                                 onerror="this.src='/static/images/{{ product.name }}.webp'; this.onerror=function(){this.src='{% static 'images/default.jpg' %}'};" 
+                                 alt="{{ product.name }}" 
+                                 class="main-img">
+                        {% endif %}
+                    </div>
+
+                    <!-- THUMBNAILS -->
+                    <div class="thumb-strip">
+                        {% if images %}
+                            {% for img in images %}
+                                <div class="thumb-card {% if forloop.first %}active{% endif %}" onclick="updateGallery(this, '{{ img.image.url }}')">
+                                    <img src="{{ img.image.url }}" alt="Gallery">
+                                </div>
+                            {% endfor %}
+                        {% elif product.image %}
+                            <div class="thumb-card active">
+                                <img src="{{ product.image.url }}" alt="Main">
+                            </div>
+                        {% else %}
+                             
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- RIGHT: PRODUCT INFO -->
+                <div class="col-lg-6">
+                    <div class="ps-lg-3">
+                        <span class="system-tag">Industrial Specification</span>
+                        <h1 class="product-h1">{{ product.name }}</h1>
+                        
+                        <div class="description-box">
+                            {{ product.description }}
+                        </div>
+
+                        <div class="spec-grid">
+                            <div class="spec-item">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>Premium Quality</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>ISO Certified</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fa-solid fa-bolt"></i>
+                                <span>Heavy Load</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                <span>Custom Design</span>
+                            </div>
+                        </div>
+
+                        <a href="https://wa.me/919664834938?text=Enquiry for: {{ product.name }}" target="_blank" class="whatsapp-btn">
+                            <i class="fa-brands fa-whatsapp fa-2xl"></i>
+                            GET PRICE QUOTATION
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Advanced Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+    // 1. Image Switcher
+    function updateGallery(card, url) {
+        const main = document.getElementById('mainImage');
+        
+        main.style.opacity = '0';
+        main.style.transform = 'scale(0.9)';
+        
+        setTimeout(() => {
+            main.src = url;
+            main.style.opacity = '1';
+            main.style.transform = 'scale(1)';
+        }, 300);
+
+        document.querySelectorAll('.thumb-card').forEach(t => t.classList.remove('active'));
+        card.classList.add('active');
+    }
+
+    // 2. GSAP Animations
+    document.addEventListener('DOMContentLoaded', () => {
+        gsap.from(".main-wrapper", { duration: 1.2, y: 50, opacity: 0, ease: "power3.out" });
+        gsap.from(".spec-item", { duration: 0.6, y: 20, opacity: 0, stagger: 0.1, delay: 0.5 });
+    });
+
+    // 3. 3D Tilt Effect
+    const container = document.getElementById('tiltContainer');
+    container.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = container.getBoundingClientRect();
+        const x = (e.clientX - left) / width - 0.5;
+        const y = (e.clientY - top) / height - 0.5;
+        
+        gsap.to(container, {
+            rotationY: x * 8,
+            rotationX: -y * 8,
+            ease: "power1.out",
+            duration: 0.5
+        });
+    });
+
+    container.addEventListener('mouseleave', () => {
+        gsap.to(container, { rotationY: 0, rotationX: 0, duration: 0.5 });
+    });
+</script>
+
+{% endblock %}

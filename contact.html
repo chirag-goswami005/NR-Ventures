@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+:root {
+    --gold: #d4a537;
+    --gold-hover: #f1d279;
+    --dark-bg: #020617;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --input-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* ================= CONTACT HERO & SECTION ================= */
+.contact-section {
+    min-height: 100vh;
+    padding: 120px 0;
+    background: radial-gradient(circle at 10% 20%, rgba(212, 165, 55, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #020617 0%, #0f172a 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Decoration */
+.contact-section::after {
+    content: "";
+    position: absolute;
+    top: -10%; right: -10%;
+    width: 500px; height: 500px;
+    background: var(--gold);
+    filter: blur(180px);
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+/* ================= INFO BOXES ================= */
+.contact-info h2 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 30px;
+}
+
+.gold-glow {
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212, 165, 55, 0.3);
+}
+
+.info-item {
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+}
+
+.info-item:hover {
+    border-color: var(--gold);
+    background: rgba(212, 165, 55, 0.03);
+    transform: translateX(10px);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(212, 165, 55, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    margin-right: 20px;
+    font-size: 1.2rem;
+}
+
+/* ================= CONTACT CARD ================= */
+.contact-card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 50px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+}
+
+.form-control {
+    background: var(--input-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px 20px;
+    color: white !important;
+    transition: 0.4s;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(212, 165, 55, 0.1);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ================= BUTTONS ================= */
+.btn-premium {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8860b 100%);
+    color: #000 !important;
+    border: none;
+    border-radius: 15px;
+    padding: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-premium:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(212, 165, 55, 0.3);
+}
+
+.btn-whatsapp {
+    background: #25d366;
+    color: white !important;
+    border-radius: 15px;
+    padding: 15px;
+    font-weight: 700;
+    transition: 0.4s;
+}
+
+.btn-whatsapp:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+}
+
+/* ================= ANIMATION ================= */
+.fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-5 contact-info fade-up">
+                <h6 class="text-warning fw-bold mb-3 tracking-widest">CONNECT WITH US</h6>
+                <h2>Let's Engineer Your <span class="gold-glow">Vision</span></h2>
+                <p class="text-secondary fs-5 mb-5">Our engineering team is ready to provide technical consultations for your high-capacity industrial projects.</p>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa fa-phone"></i></div>
+                    <div>
+                        <small class="text-secondary d-block">Call Our Office</small>
+                        <span class="fw-bold">+91 9664834938</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa fa-map-marker-alt"></i></div>
+                    <div>
+                        <small class="text-secondary d-block">Our Location</small>
+                        <span class="fw-bold">Gujarat, India</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa fa-envelope"></i></div>
+                    <div>
+                        <small class="text-secondary d-block">Official Email</small>
+                        <span class="fw-bold">nrventures@email.com</span>
+                    </div>
+                </div>
+
+                <a href="https://wa.me/919712949107" target="_blank" class="btn btn-whatsapp w-100 mt-4 d-flex align-items-center justify-content-center">
+                    <i class="fab fa-whatsapp me-3 fs-4"></i> START WHATSAPP CHAT
+                </a>
+            </div>
+
+            <!-- RIGHT CONTENT (FORM) -->
+            <div class="col-lg-7 fade-up" style="transition-delay: 0.2s;">
+                <div class="contact-card">
+                    <h4 class="text-white fw-900 mb-4">SEND A TECHNICAL INQUIRY</h4>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success border-0 rounded-4 py-3" style="background: rgba(40, 167, 69, 0.2); color: #28a745;">
+                                <i class="fa fa-check-circle me-2"></i> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'contact' %}">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input class="form-control mb-4" name="name" placeholder="Full Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control mb-4" name="phone" type="tel" pattern="[0-9]{10}" placeholder="Phone (10 digits)" required>
+                            </div>
+                        </div>
+
+                        <input class="form-control mb-4" name="email" type="email" placeholder="Email Address (Optional)">
+
+                        <textarea class="form-control mb-4" name="message" rows="5" placeholder="Describe your fabrication or storage requirements..." required></textarea>
+
+                        <button class="btn btn-premium w-100">
+                            Submit Inquiry <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+// Improved reveal logic
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach((el) => {
+    observer.observe(el);
+});
+</script>
+
+{% endblock %}
